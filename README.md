@@ -83,6 +83,61 @@ The model uses a ResNet50 backbone with the following modifications:
   - Linear layer (512 → 1)
   - Sigmoid activation
 
+## Why ResNet50?
+
+ResNet50 was chosen as the backbone architecture for several key reasons:
+
+1. **Proven Performance**: ResNet50 has demonstrated excellent performance on image classification tasks and is widely used in production systems. It won the ImageNet challenge in 2015 and has since become a standard benchmark in computer vision.
+
+2. **Residual Connections**: The architecture's residual connections help combat the vanishing gradient problem, allowing for better training of deeper networks. This is particularly important for learning complex features in food images.
+
+3. **Transfer Learning Benefits**: 
+   - Pre-trained on ImageNet, which contains many food-related images
+   - Rich feature extraction capabilities that can be fine-tuned for food freshness detection
+   - Good balance between model complexity and performance
+
+4. **Computational Efficiency**:
+   - More efficient than larger models like ResNet101 or ResNet152
+   - Better suited for CPU-based training and inference
+   - Faster training times while maintaining good accuracy
+
+5. **Memory Requirements**:
+   - Moderate memory footprint compared to larger architectures
+   - Suitable for systems with limited computational resources
+   - Efficient for deployment in production environments
+
+Alternative architectures considered:
+- **VGG**: Too many parameters, making it slower to train and more memory-intensive
+- **MobileNet**: Less accurate for complex food classification tasks
+- **EfficientNet**: More complex architecture, potentially overkill for binary classification
+- **DenseNet**: Higher memory requirements and slower inference times
+
+## Activation Functions: ReLU and Sigmoid
+
+The model uses two different activation functions for specific purposes:
+
+### ReLU (Rectified Linear Unit)
+- Used in the hidden layer (after the first linear layer)
+- Advantages:
+  - **Computational Efficiency**: Simple max(0,x) operation, making it faster to compute
+  - **Sparsity**: Can create sparse representations, helping with feature selection
+  - **Reduced Vanishing Gradient**: Less prone to the vanishing gradient problem compared to sigmoid/tanh
+  - **Biological Plausibility**: More closely mimics the behavior of biological neurons
+
+### Sigmoid
+- Used in the final layer for binary classification
+- Advantages:
+  - **Output Range**: Produces outputs between 0 and 1, perfect for binary classification
+  - **Probabilistic Interpretation**: Output can be directly interpreted as probability
+  - **Smooth Gradient**: Provides smooth gradients for backpropagation
+  - **Decision Boundary**: Creates a clear decision boundary at 0.5
+
+Why not other activation functions?
+- **Tanh**: While similar to sigmoid, its output range (-1 to 1) is less suitable for binary classification
+- **Softmax**: More appropriate for multi-class problems, overkill for binary classification
+- **Leaky ReLU**: Could be used instead of ReLU, but standard ReLU works well for this task
+- **ELU/SELU**: More complex, with no significant advantage for this specific use case
+
 ## Training Details
 
 - Optimizer: Adam with learning rate 0.001
