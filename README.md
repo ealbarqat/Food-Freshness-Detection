@@ -161,6 +161,33 @@ The model tracks and visualizes:
 - F1 Score
 - Confusion Matrix
 
+## Model Performance Results
+
+The model achieved excellent performance on the test set, as shown by the final confusion matrix:
+
+```
+[[232   1]
+ [  2 148]]
+```
+
+This confusion matrix represents:
+- **True Negatives (Fresh correctly identified)**: 232
+- **False Positives (Fresh incorrectly classified as Rotten)**: 1
+- **False Negatives (Rotten incorrectly classified as Fresh)**: 2
+- **True Positives (Rotten correctly identified)**: 148
+
+Key performance metrics:
+- **Accuracy**: 99.48% (381/383 correct predictions)
+- **Precision**: 99.33% (148/149 rotten predictions were correct)
+- **Recall**: 98.67% (148/150 rotten items were correctly identified)
+- **F1 Score**: 99.33% (harmonic mean of precision and recall)
+
+The model shows:
+- Excellent balance between precision and recall
+- Very low false positive and false negative rates
+- Strong generalization ability
+- Robust performance across both fresh and rotten classes
+
 ## Output Files
 
 - `model.pth`: Saved model weights

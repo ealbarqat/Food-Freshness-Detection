@@ -11,6 +11,7 @@ import argparse
 from tqdm import tqdm
 import time
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 class FoodDataset(Dataset):
     def __init__(self, root_dir, transform=None):
@@ -118,6 +119,18 @@ def plot_metrics(metrics_history):
     plt.savefig('training_metrics.png')
     plt.close()
 
+def plot_confusion_matrix(cm, classes=['Fresh', 'Rotten']):
+    """Plot and save confusion matrix visualization"""
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                xticklabels=classes, yticklabels=classes)
+    plt.title('Confusion Matrix')
+    plt.ylabel('True Label')
+    plt.xlabel('Predicted Label')
+    plt.tight_layout()
+    plt.savefig('confusion_matrix.png')
+    plt.close()
+
 def train_model(model, train_loader, criterion, optimizer, device):
     model.train()
     running_loss = 0.0
@@ -171,6 +184,9 @@ def evaluate_model(model, test_loader, criterion, device):
     precision = precision_score(all_labels, all_preds)
     recall = recall_score(all_labels, all_preds)
     f1 = f1_score(all_labels, all_preds)
+    
+    # Plot confusion matrix
+    plot_confusion_matrix(cm)
     
     return running_loss / len(test_loader), cm, accuracy, precision, recall, f1
 
